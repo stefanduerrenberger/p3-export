@@ -38,9 +38,16 @@ class GppostsPipeline(object):
 
 		# text remove unwanted strings
 		try:
+			# remove unwanted strings already found by crawler
 			text = item['text']
 			remove = item['remove']
 			text = text.replace(remove, '')
+
+			# convert h1 to h2
+			text = text.replace('<h1>', '<h2>')
+			text = text.replace('</h1>', '</h2>')
+			text = text.replace('&lt;h1&gt;', '&lt;h2&gt;')
+			text = text.replace('&lt;/h1&gt;', '&lt;/h2&gt;')
 
 			item['text'] = text
 		except Exception:
