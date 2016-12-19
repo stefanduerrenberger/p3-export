@@ -25,42 +25,44 @@ class GppostsPipeline(object):
 			self.titles_seen.add(item['title'])
 
 		# Date format
-		try:
-			date_object = datetime.strptime(item['date'].encode("utf8"), '%d. %B, %Y am %H:%M')
-			item['date'] = date_object.strftime('%Y-%m-%d %H:%M')
-		except Exception:
+		if item['date']:
 			try:
-				date_object = datetime.strptime(item['date'].encode("utf8"), '%d. %B, %Y')
+				date_object = datetime.strptime(item['date'].encode("utf8"), '%d. %B, %Y am %H:%M')
 				item['date'] = date_object.strftime('%Y-%m-%d %H:%M')
 			except Exception:
-				logging.exception('Date conversion exception')
-				pass
+				try:
+					date_object = datetime.strptime(item['date'].encode("utf8"), '%d. %B, %Y')
+					item['date'] = date_object.strftime('%Y-%m-%d %H:%M')
+				except Exception:
+					logging.exception('Date conversion exception')
+					pass
 
 		# text remove unwanted strings
 		try:
 			# remove unwanted strings already found by crawler
 			text = item['text']
 
-			# Image gallery title image
-			remove = item['remove']
-			if remove:
-				text = text.replace(remove, '')
-			
-			# remove open button in gallery (might be included in the title image code)
-			remove2 = item['remove2']
-			if remove2:
-				text = text.replace(remove2, '')
+			if text:
+				# Image gallery title image
+				remove = item['remove']
+				if remove:
+					text = text.replace(remove, '')
+				
+				# remove open button in gallery (might be included in the title image code)
+				remove2 = item['remove2']
+				if remove2:
+					text = text.replace(remove2, '')
 
-			# convert h1 to h2
-			text = text.replace('<h1>', '<h2>')
-			text = text.replace('</h1>', '</h2>')
-			text = text.replace('&lt;h1&gt;', '&lt;h2&gt;')
-			text = text.replace('&lt;/h1&gt;', '&lt;/h2&gt;')
+				# convert h1 to h2
+				text = text.replace('<h1>', '<h2>')
+				text = text.replace('</h1>', '</h2>')
+				text = text.replace('&lt;h1&gt;', '&lt;h2&gt;')
+				text = text.replace('&lt;/h1&gt;', '&lt;/h2&gt;')
 
-			# convert http to https in youtube links
-			text = text.replace('http://www.youtube.com', 'https://www.youtube.com')
+				# convert http to https in youtube links
+				text = text.replace('http://www.youtube.com', 'https://www.youtube.com')
 
-			item['text'] = text
+				item['text'] = text
 		except Exception:
 			logging.exception('Text conversion exception')
 			pass

@@ -14,7 +14,7 @@ function update_images_in_post_content($id) {
 	$content = $thepost->post_content;
 
 	$content = preg_replace_callback(
-		'/\/switzerland?\/[^ ]+?(?:\.jpg|\.png|\.gif)/', 
+		'/\/switzerland?\/[^ ]+?(?:\.jpg|\.png|\.gif|\.pdf)/', 
 		function($matches) {
 			for ($i = 0; $i < count($matches); $i++) {
 				$newPath = 'https://proto2.greenpeace.ch/wp-content/uploads/2016/11/';
