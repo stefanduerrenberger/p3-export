@@ -40,8 +40,14 @@ class GppostsPipeline(object):
 		try:
 			# remove unwanted strings already found by crawler
 			text = item['text']
+
+			# Image gallery title image
 			remove = item['remove']
 			text = text.replace(remove, '')
+			
+			# remove open button in gallery (might be included in the title image code)
+			remove2 = item['remove2']
+			text = text.replace(remove2, '')
 
 			# convert h1 to h2
 			text = text.replace('<h1>', '<h2>')
