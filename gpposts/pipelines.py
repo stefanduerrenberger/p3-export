@@ -43,11 +43,13 @@ class GppostsPipeline(object):
 
 			# Image gallery title image
 			remove = item['remove']
-			text = text.replace(remove, '')
+			if remove:
+				text = text.replace(remove, '')
 			
 			# remove open button in gallery (might be included in the title image code)
 			remove2 = item['remove2']
-			text = text.replace(remove2, '')
+			if remove2:
+				text = text.replace(remove2, '')
 
 			# convert h1 to h2
 			text = text.replace('<h1>', '<h2>')
@@ -55,8 +57,12 @@ class GppostsPipeline(object):
 			text = text.replace('&lt;h1&gt;', '&lt;h2&gt;')
 			text = text.replace('&lt;/h1&gt;', '&lt;/h2&gt;')
 
+			# convert http to https in youtube links
+			text = text.replace('http://www.youtube.com', 'https://www.youtube.com')
+
 			item['text'] = text
 		except Exception:
+			logging.exception('Text conversion exception')
 			pass
 
 		# Gallery images (imagesC)
