@@ -9,7 +9,7 @@
 import logging
 from datetime import datetime
 from scrapy.exceptions import DropItem
-import locale
+import locale, re
 
 locale.setlocale(locale.LC_ALL, 'de_CH.utf8') 
 
@@ -57,6 +57,24 @@ class GppostsPipeline(object):
 
 			item['text'] = text
 		except Exception:
+			pass
+
+		# Gallery images (imagesC)
+		try:
+			images = item['imagesC']
+			
+			for i, image in enumerate(images):
+				logging.debug('Gallery Image: ' + image)
+				image = re.sub('^(.*)\~\^\/switzerland\/', 'http://www.greenpeace.org/switzerland/', image)
+				image = re.sub('\~\^[0-9]*$', '', image)
+				logging.debug('Gallery Image Converted: ' + image)
+				images[i] = image
+
+			#logging.debug('All gallery images: ' + join(str(p) for p in images) )
+
+			item['imagesC'] = images
+		except Exception:
+			logging.exception('Gallery image conversion')
 			pass
 
 		#logging.debug('trying to grab images from text')

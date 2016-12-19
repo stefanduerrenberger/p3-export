@@ -51,6 +51,7 @@ class BlogsSpider(scrapy.Spider):
             'remove2': response.xpath('//div[@class="post-content"]//span[@class="btn-open"]').extract_first(),
             'imagesA': response.xpath('//div[@class="news-list"]//div[@class="post-content"]//a[img]/@href').extract(),
             'imagesB': response.xpath('//div[@class="news-list"]//div[@class="post-content"]//img[not(ancestor::a)]/@src').extract(),
+            'imagesC': response.xpath('//div[@class="gallery"]//div[@class="img-nav"]//a/@rel').extract(), # Galleries (horrible html)
             'pdfFiles': response.css('div.post-content a[href$=".pdf"]::attr(href)').extract(),
             'url': response.url,
 
@@ -75,6 +76,7 @@ class BlogsSpider(scrapy.Spider):
             'remove2': response.xpath('//div[@class="post-content"]//span[@class="btn-open"]').extract_first(),
             'imagesA': response.xpath('//div[@class="text"]/div[not(@id) and not(@class)]//a[img]/@href').extract(),
             'imagesB': response.xpath('//div[@class="text"]/div[not(@id) and not(@class)]//img[not(ancestor::a)]/@src').extract(),
+            'imagesC': response.xpath('//div[@class="gallery"]//div[@class="img-nav"]//a/@rel').extract(), # Galleries (horrible html)
             'pdfFiles': response.css('div.post-content a[href$=".pdf"]::attr(href)').extract(),
             'url': response.url,
             'subtitle': extract_with_css('div.article h2 span::text'),
