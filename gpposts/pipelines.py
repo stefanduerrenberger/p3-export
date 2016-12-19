@@ -26,13 +26,14 @@ class GppostsPipeline(object):
 
 		# Date format
 		try:
-			date_object = datetime.strptime(item['date'], '%d. %B, %Y am %H:%M')
+			date_object = datetime.strptime(item['date'].encode("utf8"), '%d. %B, %Y am %H:%M')
 			item['date'] = date_object.strftime('%Y-%m-%d %H:%M')
 		except Exception:
 			try:
-				date_object = datetime.strptime(item['date'], '%d. %B, %Y')
+				date_object = datetime.strptime(item['date'].encode("utf8"), '%d. %B, %Y')
 				item['date'] = date_object.strftime('%Y-%m-%d %H:%M')
 			except Exception:
+				logging.exception('Date conversion exception')
 				pass
 
 		# text remove unwanted strings

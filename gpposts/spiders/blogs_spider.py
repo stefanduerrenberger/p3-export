@@ -1,6 +1,8 @@
 import scrapy
 import logging
+import locale
 
+locale.setlocale(locale.LC_ALL, 'de_CH.utf8') 
 
 class BlogsSpider(scrapy.Spider):
     name = 'blogs'
