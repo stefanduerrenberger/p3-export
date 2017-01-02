@@ -17,7 +17,7 @@ class BlogsFrSpider(scrapy.Spider):
     def parse(self, response):
         # follow links to blog pages
         for href in response.css('div.news-content h3 a::attr(href)').extract():
-            if ("Newsblog" in href) or ("Kunos-Kolumne" in href):
+            if ("Newsblog" in href) or ("Kunos-Kolumne" in href) or ("blog" in href):
                 yield scrapy.Request(response.urljoin(href), callback=self.parse_blog)
             else:
                 yield scrapy.Request(response.urljoin(href), callback=self.parse_story)
@@ -65,7 +65,8 @@ class BlogsFrSpider(scrapy.Spider):
 
         yield {
             'type': 'Story',
-            'title': extract_with_css('div.article h1 span::text'),
+            'supertitle': extract_with_css('div.article h1 span::text'),
+            'title': extract_with_css('div.article h2 span::text'),
             'author': '',
             'date': response.css('div.article div.text span.author::text').re_first(r' - \s*(.*)'),
             #'lead': response.css('div.article div.text div.leader').extract(),

@@ -18,6 +18,13 @@ class GppostsPipeline(object):
 		self.titles_seen = set()
 
 	def process_item(self, item, spider):
+		# sort out the titles, the french version has multiple ways of using titles that we get in either the supertitle or title:
+		if ('supertitle' in item) and item['supertitle']:
+			if item['title']:
+				item['title'] = item['supertitle'] + ' - ' + item['title']
+			else:
+				item['title'] = item['supertitle']
+
 		# Duplicate filter
 		if item['title'] in self.titles_seen:
 			raise DropItem("Duplicate item found: %s" % item)
