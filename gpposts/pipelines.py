@@ -11,7 +11,7 @@ from datetime import datetime
 from scrapy.exceptions import DropItem
 import locale, re, csv
 
-locale.setlocale(locale.LC_ALL, 'de_CH.utf8') 
+locale.setlocale(locale.LC_ALL, 'fr_CH.utf8') 
 
 class GppostsPipeline(object):
     def __init__(self):
@@ -41,8 +41,16 @@ class GppostsPipeline(object):
                     date_object = datetime.strptime(item['date'].encode("utf8"), '%d. %B, %Y')
                     item['date'] = date_object.strftime('%Y-%m-%d %H:%M')
                 except Exception:
-                    logging.exception('Date conversion exception')
-                    pass
+                    try:
+                        date_object = datetime.strptime(item['date'].encode("utf8"), '%d %B, %Y à %H:%M')
+                        item['date'] = date_object.strftime('%Y-%m-%d %H:%M')
+                    except Exception:
+                        try:
+                            date_object = datetime.strptime(item['date'].encode("utf8"), '%d %B, %Y')
+                            item['date'] = date_object.strftime('%Y-%m-%d %H:%M')
+                        except Exception:
+                            logging.exception('Date conversion exception:' + item['date'])
+                            pass
 
         # text remove unwanted strings
         try:
