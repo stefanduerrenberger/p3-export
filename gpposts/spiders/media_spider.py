@@ -4,11 +4,11 @@ import locale
 
 locale.setlocale(locale.LC_ALL, 'fr_CH.utf8') 
 
-class PublicationsSpider(scrapy.Spider):
-    name = 'publications'
+class MediaSpider(scrapy.Spider):
+    name = 'media'
 
     def start_requests(self):
-        start_urls = ['http://www.greenpeace.org/switzerland/de/?tab=4']
+        start_urls = ['http://www.greenpeace.org/switzerland/de/?tab=3']
 
         for url in start_urls:
             yield scrapy.Request(url=url, callback=self.parse)
@@ -55,11 +55,11 @@ class PublicationsSpider(scrapy.Spider):
             'url': response.url,
         }
 
-class PublicationsFrSpider(scrapy.Spider):
-    name = 'publications_fr'
+class MediaFrSpider(scrapy.Spider):
+    name = 'media_fr'
 
     def start_requests(self):
-        start_urls = ['http://www.greenpeace.org/switzerland/fr/?tab=4']
+        start_urls = ['http://www.greenpeace.org/switzerland/fr/?tab=3']
 
         for url in start_urls:
             yield scrapy.Request(url=url, callback=self.parse)
@@ -105,3 +105,4 @@ class PublicationsFrSpider(scrapy.Spider):
             'pdfFiles': response.css('div.article a[href$=".pdf"]::attr(href)').extract(),
             'url': response.url,
         }
+

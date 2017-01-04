@@ -11,7 +11,7 @@ from datetime import datetime
 from scrapy.exceptions import DropItem
 import locale, re, csv
 
-locale.setlocale(locale.LC_ALL, 'de_CH.utf8') 
+locale.setlocale(locale.LC_ALL, 'fr_CH.utf8') 
 
 class GppostsPipeline(object):
     def __init__(self):
