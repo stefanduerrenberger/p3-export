@@ -98,7 +98,7 @@ LOG_DATEFORMAT='%Y-%m-%d %H:%M:%S'
 LOG_FILE='/home/sd/Projekte/gpch-export/gpposts/scrapy_log'
 LOGLEVEL='DEBUG'
 
-FEED_URI='/home/sd/Projekte/gpch-export/gpposts/posts_fr.xml'
+FEED_URI='/home/sd/Projekte/gpch-export/gpposts/publications.xml'
 FEED_FORMAT='xml'
 FEED_EXPORT_ENCODING='utf-8'
 #FEED_EXPORT_FIELDS = ["type", "title", "date". "author", "tags", "categories", "lead", "text", "subtitle"]

@@ -11,7 +11,7 @@ from datetime import datetime
 from scrapy.exceptions import DropItem
 import locale, re, csv
 
-locale.setlocale(locale.LC_ALL, 'fr_CH.utf8') 
+locale.setlocale(locale.LC_ALL, 'de_CH.utf8') 
 
 class GppostsPipeline(object):
     def __init__(self):
@@ -21,7 +21,7 @@ class GppostsPipeline(object):
         # sort out the titles, the french version has multiple ways of using titles that we get in either the supertitle or title:
         if ('supertitle' in item) and item['supertitle']:
             if item['title']:
-                item['title'] = item['supertitle'] + ' - ' + item['title']
+                item['title'] = item['supertitle'] + ': ' + item['title']
             else:
                 item['title'] = item['supertitle']
 
