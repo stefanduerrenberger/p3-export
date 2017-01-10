@@ -7,6 +7,14 @@ locale.setlocale(locale.LC_ALL, 'fr_CH.utf8')
 class PublicationsSpider(scrapy.Spider):
     name = 'publications'
 
+    custom_settings = {
+        'ROBOTSTXT_OBEY': 0,
+        #'DEPTH_LIMIT': 4,
+        'FEED_URI': 'publications_de.xml',
+        'FEED_FORMAT': 'xml',
+        'FEED_EXPORT_ENCODING': 'utf-8',
+    }
+
     def start_requests(self):
         start_urls = ['http://www.greenpeace.org/switzerland/de/?tab=4']
 
@@ -57,6 +65,14 @@ class PublicationsSpider(scrapy.Spider):
 
 class PublicationsFrSpider(scrapy.Spider):
     name = 'publications_fr'
+
+    custom_settings = {
+        'ROBOTSTXT_OBEY': 0,
+        #'DEPTH_LIMIT': 4,
+        'FEED_URI': 'publications_fr.xml',
+        'FEED_FORMAT': 'xml',
+        'FEED_EXPORT_ENCODING': 'utf-8',
+    }
 
     def start_requests(self):
         start_urls = ['http://www.greenpeace.org/switzerland/fr/?tab=4']

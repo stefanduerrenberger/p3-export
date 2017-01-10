@@ -95,7 +95,7 @@ LOG_ENABLED=True
 LOG_ENCODING='utf-8'
 LOG_FORMAT='%(asctime)s [%(name)s] %(levelname)s: %(message)s'
 LOG_DATEFORMAT='%Y-%m-%d %H:%M:%S'
-LOG_FILE='/home/sd/Projekte/gpch-export/gpposts/scrapy_log'
+LOG_FILE='scrapy.log'
 LOGLEVEL='DEBUG'
 
 FEED_URI='/home/sd/Projekte/gpch-export/gpposts/media_fr.xml'

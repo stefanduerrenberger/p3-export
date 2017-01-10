@@ -4,8 +4,16 @@ import locale
 
 locale.setlocale(locale.LC_ALL, 'fr_CH.utf8') 
 
-class MediaSpider(scrapy.Spider):
-    name = 'media'
+class PressReleasesSpider(scrapy.Spider):
+    name = 'pressreleases'
+
+    custom_settings = {
+        'ROBOTSTXT_OBEY': 0,
+        #'DEPTH_LIMIT': 4,
+        'FEED_URI': 'pressreleases_de.xml',
+        'FEED_FORMAT': 'xml',
+        'FEED_EXPORT_ENCODING': 'utf-8',
+    }
 
     def start_requests(self):
         start_urls = ['http://www.greenpeace.org/switzerland/de/?tab=3']
@@ -55,8 +63,16 @@ class MediaSpider(scrapy.Spider):
             'url': response.url,
         }
 
-class MediaFrSpider(scrapy.Spider):
-    name = 'media_fr'
+class PressReleasesFrSpider(scrapy.Spider):
+    name = 'pressreleases_fr'
+
+    custom_settings = {
+        'ROBOTSTXT_OBEY': 0,
+        #'DEPTH_LIMIT': 4,
+        'FEED_URI': 'pressreleases_fr.xml',
+        'FEED_FORMAT': 'xml',
+        'FEED_EXPORT_ENCODING': 'utf-8',
+    }
 
     def start_requests(self):
         start_urls = ['http://www.greenpeace.org/switzerland/fr/?tab=3']

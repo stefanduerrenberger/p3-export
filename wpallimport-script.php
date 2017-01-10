@@ -17,7 +17,7 @@ function update_images_in_post_content($id) {
 		'/\/switzerland?\/[^ ]+?(?:\.jpg|\.png|\.gif|\.pdf)/', 
 		function($matches) {
 			for ($i = 0; $i < count($matches); $i++) {
-				$newPath = 'https://proto2.greenpeace.ch/wp-content/uploads/2017/01/';
+				$newPath = 'http://greenpeace/wp-content/uploads/2017/01/';
 				$filename = basename($matches[$i]);
 
 				/*
