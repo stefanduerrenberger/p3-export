@@ -1,8 +1,10 @@
 <?php
 
+/* Put this into the scripts section of WP All Import. It's not imported with the import profile "/"
+
 /*
-Old: /switzerland/Global/switzerland/photos/toxics/161114_Detox.jpg
-New: https://proto2.greenpeace.ch/wp-content/uploads/2016/11/161114_Detox.jpg
+Old image path: /switzerland/Global/switzerland/photos/toxics/161114_Detox.jpg
+New image URL: https://proto2.greenpeace.ch/wp-content/uploads/2016/11/161114_Detox.jpg
 */
 add_action('pmxi_saved_post', 'update_images_in_post_content', 10, 3);
 function update_images_in_post_content($id) {
@@ -17,17 +19,9 @@ function update_images_in_post_content($id) {
 		'/\/switzerland?\/[^ ]+?(?:\.jpg|\.png|\.gif|\.pdf)/', 
 		function($matches) {
 			for ($i = 0; $i < count($matches); $i++) {
+				// set the new upload directory URL
 				$newPath = 'http://greenpeace/wp-content/uploads/2017/01/';
 				$filename = basename($matches[$i]);
-
-				/*
-				// filename fixes (remove underscore at beginning of filename)
-				$prefix = '_';
-
-				if (substr($filename, 0, strlen($prefix)) == $prefix) {
-					$filename = substr($filename, strlen($prefix));	
-				} 
-				*/
 
 				$filename = sanitize_file_name(urldecode($filename));
 

@@ -25,7 +25,7 @@ class GppostsPipeline(object):
             else:
                 item['title'] = item['supertitle']
 
-        # Duplicate filter
+        # Duplicate filter by title
         if item['title'] in self.titles_seen:
             raise DropItem("Duplicate item found: %s" % item)
         else:
@@ -58,12 +58,12 @@ class GppostsPipeline(object):
             text = item['text']
 
             if text:
-                # Image gallery title image
+                # Remove image gallery title image
                 remove = item['remove']
                 if remove:
                     text = text.replace(remove, '')
                 
-                # remove open button in gallery (might be included in the title image code)
+                # Remove open button in gallery (might be included in the title image code)
                 remove2 = item['remove2']
                 if remove2:
                     text = text.replace(remove2, '')
@@ -100,17 +100,17 @@ class GppostsPipeline(object):
             logging.exception('Gallery image conversion')
             pass
 
-        # Categories conversion (into tags)
+        # Categories and tags conversion (into tags)
         item['oldCategories'] = item['categories']
         item['oldTags'] = item['tags']
         newTags = set()
 
+        # Convert categories, but save them into tags
         if item['categories']:
             # convert tags string to list
             itemTagsString = item['categories']
-            #logging.debug('Categories string: ' + itemTagsString )
+
             itemTags = itemTagsString.split(",")
-            #logging.debug('Categories list: ' + str(itemTags) )
 
             with open('category-conversion.csv') as csv_data:
                 reader = csv.reader(csv_data)
@@ -173,12 +173,7 @@ class GppostsPipeline(object):
 
         logging.debug('Converted Tags: ' + str(newTags))
 
-
         # save the tags back to item['tags']
         item['tags'] = ",".join(newTags) 
 
-
-        #logging.debug('trying to grab images from text')
-        #logging.debug("Text: " + item['text'])
-        #item['images'] = 'test'
         return item
