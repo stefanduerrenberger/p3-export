@@ -43,7 +43,7 @@ class PublicationsSpider(scrapy.Spider):
             return response.css(query).extract_first()
 
         yield {
-            'type': 'Blog',
+            'type': 'Publication',
             'supertitle': extract_with_css('div.article h1 span::text'),
             'title': response.css('div.article h2 span::text').extract_first(),
             'author': '',
@@ -102,7 +102,7 @@ class PublicationsFrSpider(scrapy.Spider):
             return response.css(query).extract_first()
 
         yield {
-            'type': 'Blog',
+            'type': 'Publication',
             'supertitle': extract_with_css('div.article h1 span::text'),
             'title': response.css('div.article h2 span::text').extract_first(),
             'author': '',
