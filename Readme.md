@@ -25,6 +25,7 @@ Running this puts heavy loads on the webserver. Please be considerate. When test
 ## Files explanation
 
 - category-conversion.csv: Contains a list of conversions to be done on tags and categories. Used to clean up tagging in the content. Empty the list or remove that part from gpposts/pipelines.py if you don't want to use tag conversion.
+- example_output.xml: Example XML output from running the blog spider.
 - gpposts/pipelines.py: Pipelines used for cleaning up the data after it has been scraped.
 - gpposts/settings.py: Most settings are here, some you can find directly in the spider files.
 - gpposts/spiders/blogs_spider.py: Spider for blog posts. Adapt to your needs.
