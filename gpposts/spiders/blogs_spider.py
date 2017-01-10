@@ -9,7 +9,6 @@ class BlogsSpider(scrapy.Spider):
 
     custom_settings = {
         'ROBOTSTXT_OBEY': 0,
-        #'DEPTH_LIMIT': 4,
         'FEED_URI': 'blogs_de.xml',
         'FEED_FORMAT': 'xml',
         'FEED_EXPORT_ENCODING': 'utf-8',
@@ -47,6 +46,7 @@ class BlogsSpider(scrapy.Spider):
 
         yield {
             'type': 'Blog',
+            'language': 'de',
             'title': extract_with_css('div.news-list h1::text'),
             'author': response.xpath('string(//div[@class="news-list"]/ul/li/*/*/span[@class="caption"]/span[@class="green1"]/strong)').re_first(r'von \s*(.*)'),
             'date': response.css('div.news-list .caption::text').re_first(r' - \s*(.*)'),
@@ -73,6 +73,7 @@ class BlogsSpider(scrapy.Spider):
 
         yield {
             'type': 'Story',
+            'language': 'de',
             'title': extract_with_css('div.article h1 span::text'),
             'author': '',
             'date': response.css('div.article div.text span.author::text').re_first(r' - \s*(.*)'),
@@ -97,7 +98,6 @@ class BlogsFrSpider(scrapy.Spider):
 
     custom_settings = {
         'ROBOTSTXT_OBEY': 0,
-        #'DEPTH_LIMIT': 4,
         'FEED_URI': 'blogs_fr.xml',
         'FEED_FORMAT': 'xml',
         'FEED_EXPORT_ENCODING': 'utf-8',
@@ -135,6 +135,7 @@ class BlogsFrSpider(scrapy.Spider):
 
         yield {
             'type': 'Blog',
+            'language': 'fr',
             'title': extract_with_css('div.news-list h1::text'),
             'author': response.xpath('string(//div[@class="news-list"]/ul/li/*/*/span[@class="caption"]/span[@class="green1"]/strong)').re_first(r'von \s*(.*)'),
             'date': response.css('div.news-list .caption::text').re_first(r' - \s*(.*)'),
@@ -161,6 +162,7 @@ class BlogsFrSpider(scrapy.Spider):
 
         yield {
             'type': 'Story',
+            'language': 'fr',
             'supertitle': extract_with_css('div.article h1 span::text'),
             'title': extract_with_css('div.article h2 span::text'),
             'author': '',

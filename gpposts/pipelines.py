@@ -176,4 +176,29 @@ class GppostsPipeline(object):
         # save the tags back to item['tags']
         item['tags'] = ",".join(newTags) 
 
+        # get the slug from the URL
+        if item['type'] in ('Blog', 'Story'):
+            if item['language'] == 'de':
+                found = re.findall('^http:\/\/www.greenpeace.org(.*)\/(.*)\/blog\/([0-9]*)\/$', item['url'])
+                item['slug'] = found[0][1].strip()
+            elif item['language'] == 'fr':
+                item['slug'] = '' # Doesn't have a slug in the URL
+
+        elif item['type'] == 'PressRelease':
+            if item['language'] == 'de':
+                found = re.findall('^http:\/\/www.greenpeace.org(.*)\/Medienmitteilungen\/(.*)\/$', item['url'])
+                item['slug'] = found[0][1].strip()
+            elif item['language'] == 'fr':
+                found = re.findall('^http:\/\/www.greenpeace.org(.*)\/communiques\/(.*)\/(.*)\/$', item['url'])
+                item['slug'] = found[0][2].strip()
+
+        elif item['type'] == 'Publication':
+            if item['language'] == 'de':
+                found = re.findall('^http:\/\/www.greenpeace.org(.*)\/Publikationen\/([a-zA-Z-]*)\/(.*)\/$', item['url'])
+                item['slug'] = found[0][2].strip()
+            elif item['language'] == 'fr':
+                found = re.findall('^http:\/\/www.greenpeace.org(.*)\/publications\/documents\/(.*)\/$', item['url'])
+                item['slug'] = found[0][1].strip()
+
+        # Finished, return the item
         return item

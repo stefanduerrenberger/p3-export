@@ -9,7 +9,6 @@ class PressReleasesSpider(scrapy.Spider):
 
     custom_settings = {
         'ROBOTSTXT_OBEY': 0,
-        #'DEPTH_LIMIT': 4,
         'FEED_URI': 'pressreleases_de.xml',
         'FEED_FORMAT': 'xml',
         'FEED_EXPORT_ENCODING': 'utf-8',
@@ -44,6 +43,7 @@ class PressReleasesSpider(scrapy.Spider):
 
         yield {
             'type': 'PressRelease',
+            'language': 'de',
             'supertitle': extract_with_css('div.article h1 span::text'),
             'title': response.css('div.article h2 span::text').extract_first(),
             'author': '',
@@ -68,7 +68,6 @@ class PressReleasesFrSpider(scrapy.Spider):
 
     custom_settings = {
         'ROBOTSTXT_OBEY': 0,
-        #'DEPTH_LIMIT': 4,
         'FEED_URI': 'pressreleases_fr.xml',
         'FEED_FORMAT': 'xml',
         'FEED_EXPORT_ENCODING': 'utf-8',
@@ -103,6 +102,7 @@ class PressReleasesFrSpider(scrapy.Spider):
 
         yield {
             'type': 'PressRelease',
+            'language': 'fr',
             'supertitle': extract_with_css('div.article h1 span::text'),
             'title': response.css('div.article h2 span::text').extract_first(),
             'author': '',

@@ -9,7 +9,6 @@ class PublicationsSpider(scrapy.Spider):
 
     custom_settings = {
         'ROBOTSTXT_OBEY': 0,
-        #'DEPTH_LIMIT': 4,
         'FEED_URI': 'publications_de.xml',
         'FEED_FORMAT': 'xml',
         'FEED_EXPORT_ENCODING': 'utf-8',
@@ -44,6 +43,7 @@ class PublicationsSpider(scrapy.Spider):
 
         yield {
             'type': 'Publication',
+            'language': 'de',
             'supertitle': extract_with_css('div.article h1 span::text'),
             'title': response.css('div.article h2 span::text').extract_first(),
             'author': '',
@@ -68,7 +68,6 @@ class PublicationsFrSpider(scrapy.Spider):
 
     custom_settings = {
         'ROBOTSTXT_OBEY': 0,
-        #'DEPTH_LIMIT': 4,
         'FEED_URI': 'publications_fr.xml',
         'FEED_FORMAT': 'xml',
         'FEED_EXPORT_ENCODING': 'utf-8',
@@ -103,6 +102,7 @@ class PublicationsFrSpider(scrapy.Spider):
 
         yield {
             'type': 'Publication',
+            'language': 'fr',
             'supertitle': extract_with_css('div.article h1 span::text'),
             'title': response.css('div.article h2 span::text').extract_first(),
             'author': '',
