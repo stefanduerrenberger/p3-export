@@ -21,7 +21,12 @@ class GppostsPipeline(object):
         # sort out the titles, the french version has multiple ways of using titles that we get in either the supertitle or title:
         if ('supertitle' in item) and item['supertitle']:
             if item['title']:
-                item['title'] = item['supertitle'] + ': ' + item['title']
+                supertitle = item['supertitle']
+                
+                if supertitle[-1] == ':': # Some Supertitles already have a :
+                    item['title'] = item['supertitle'] + ' ' + item['title']
+                else:
+                    item['title'] = item['supertitle'] + ': ' + item['title']
             else:
                 item['title'] = item['supertitle']
 
@@ -67,6 +72,11 @@ class GppostsPipeline(object):
                 remove2 = item['remove2']
                 if remove2:
                     text = text.replace(remove2, '')
+
+                # Remove gallery navigation
+                remove3 = item['remove3']
+                if remove3:
+                    text = text.replace(remove3, '')
 
                 # convert h1 to h2
                 text = text.replace('<h1>', '<h2>')

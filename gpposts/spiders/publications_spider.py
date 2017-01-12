@@ -55,6 +55,7 @@ class PublicationsSpider(scrapy.Spider):
             'text':  response.xpath('//div[@class="text"]/div[not(@id) and not(@class)]').extract_first(),
             'remove': response.css('div.img-view.galleria_container').extract_first(),
             'remove2': response.xpath('//span[@class="btn-open"]').extract_first(),
+            'remove3': response.css('div.gallery div.navi').extract_first(),
             'imagesA': response.xpath('//div[@class="text"]/div[not(@id) and not(@class)]//a[img]/@href').extract(),
             #'imagesB': response.xpath('//div[@class="text"]/div[not(@id) and not(@class)]//img[not(ancestor::a)]/@src').extract(), #don't import image if there's an a tag around it
             'imagesB': response.xpath('//div[@class="text"]/div[not(@id) and not(@class)]//img/@src').extract(),
@@ -114,6 +115,7 @@ class PublicationsFrSpider(scrapy.Spider):
             'text':  response.xpath('//div[@class="text"]/div[not(@id) and not(@class)]').extract_first(),
             'remove': response.css('div.img-view.galleria_container').extract_first(),
             'remove2': response.xpath('//span[@class="btn-open"]').extract_first(),
+            'remove3': response.css('div.gallery div.navi').extract_first(),
             'imagesA': response.xpath('//div[@class="text"]/div[not(@id) and not(@class)]//a[img]/@href').extract(),
             #'imagesB': response.xpath('//div[@class="text"]/div[not(@id) and not(@class)]//img[not(ancestor::a)]/@src').extract(), #don't import image if there's an a tag around it
             'imagesB': response.xpath('//div[@class="text"]/div[not(@id) and not(@class)]//img/@src').extract(),
