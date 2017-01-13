@@ -11,7 +11,7 @@ from datetime import datetime
 from scrapy.exceptions import DropItem
 import locale, re, csv
 
-locale.setlocale(locale.LC_ALL, 'fr_CH.utf8') 
+locale.setlocale(locale.LC_ALL, 'de_CH.utf8') 
 
 class GppostsPipeline(object):
     def __init__(self):
@@ -43,19 +43,23 @@ class GppostsPipeline(object):
                 item['date'] = date_object.strftime('%Y-%m-%d %H:%M')
             except Exception:
                 try:
-                    date_object = datetime.strptime(item['date'].encode("utf8"), '%d. %B, %Y')
+                    date_object = datetime.strptime(item['date'].encode("utf8"), '%Y-%B-%d %H:%M')
                     item['date'] = date_object.strftime('%Y-%m-%d %H:%M')
                 except Exception:
                     try:
-                        date_object = datetime.strptime(item['date'].encode("utf8"), '%d %B, %Y à %H:%M')
+                        date_object = datetime.strptime(item['date'].encode("utf8"), '%d. %B, %Y')
                         item['date'] = date_object.strftime('%Y-%m-%d %H:%M')
                     except Exception:
                         try:
-                            date_object = datetime.strptime(item['date'].encode("utf8"), '%d %B, %Y')
+                            date_object = datetime.strptime(item['date'].encode("utf8"), '%d %B, %Y à %H:%M')
                             item['date'] = date_object.strftime('%Y-%m-%d %H:%M')
                         except Exception:
-                            logging.exception('Date conversion exception:' + item['date'])
-                            pass
+                            try:
+                                date_object = datetime.strptime(item['date'].encode("utf8"), '%d %B, %Y')
+                                item['date'] = date_object.strftime('%Y-%m-%d %H:%M')
+                            except Exception:
+                                logging.exception('Date conversion exception:' + item['date'])
+                                pass
 
         # text remove unwanted strings
         try:
@@ -74,9 +78,8 @@ class GppostsPipeline(object):
                     text = text.replace(remove2, '')
 
                 # Remove gallery navigation
-                remove3 = item['remove3']
-                if remove3:
-                    text = text.replace(remove3, '')
+                if item['remove3']:
+                    text = text.replace(item['remove3'], '')
 
                 # convert h1 to h2
                 text = text.replace('<h1>', '<h2>')
@@ -187,28 +190,32 @@ class GppostsPipeline(object):
         item['tags'] = ",".join(newTags) 
 
         # get the slug from the URL
-        if item['type'] in ('Blog', 'Story'):
-            if item['language'] == 'de':
-                found = re.findall('^http:\/\/www.greenpeace.org(.*)\/(.*)\/blog\/([0-9]*)\/$', item['url'])
-                item['slug'] = found[0][1].strip()
-            elif item['language'] == 'fr':
-                item['slug'] = '' # Doesn't have a slug in the URL
+        try:
+            if item['type'] in ('Blog', 'Story'):
+                if item['language'] == 'de':
+                    found = re.findall('^http:\/\/www.greenpeace.org(.*)\/(.*)\/blog\/([0-9]*)\/$', item['url'])
+                    item['slug'] = found[0][1].strip()
+                elif item['language'] == 'fr':
+                    item['slug'] = '' # Doesn't have a slug in the URL
 
-        elif item['type'] == 'PressRelease':
-            if item['language'] == 'de':
-                found = re.findall('^http:\/\/www.greenpeace.org(.*)\/Medienmitteilungen\/(.*)\/$', item['url'])
-                item['slug'] = found[0][1].strip()
-            elif item['language'] == 'fr':
-                found = re.findall('^http:\/\/www.greenpeace.org(.*)\/communiques\/(.*)\/(.*)\/$', item['url'])
-                item['slug'] = found[0][2].strip()
+            elif item['type'] == 'PressRelease':
+                if item['language'] == 'de':
+                    found = re.findall('^http:\/\/www.greenpeace.org(.*)\/Medienmitteilungen\/(.*)\/$', item['url'])
+                    item['slug'] = found[0][1].strip()
+                elif item['language'] == 'fr':
+                    found = re.findall('^http:\/\/www.greenpeace.org(.*)\/communiques\/(.*)\/(.*)\/$', item['url'])
+                    item['slug'] = found[0][2].strip()
 
-        elif item['type'] == 'Publication':
-            if item['language'] == 'de':
-                found = re.findall('^http:\/\/www.greenpeace.org(.*)\/Publikationen\/([a-zA-Z-]*)\/(.*)\/$', item['url'])
-                item['slug'] = found[0][2].strip()
-            elif item['language'] == 'fr':
-                found = re.findall('^http:\/\/www.greenpeace.org(.*)\/publications\/documents\/(.*)\/$', item['url'])
-                item['slug'] = found[0][1].strip()
+            elif item['type'] == 'Publication':
+                if item['language'] == 'de':
+                    found = re.findall('^http:\/\/www.greenpeace.org(.*)\/Publikationen\/([a-zA-Z-]*)\/(.*)\/$', item['url'])
+                    item['slug'] = found[0][2].strip()
+                elif item['language'] == 'fr':
+                    found = re.findall('^http:\/\/www.greenpeace.org(.*)\/publications\/documents\/(.*)\/$', item['url'])
+                    item['slug'] = found[0][1].strip()
+        except Exception:
+            logging.info('Failed to find slug:' + item['date'])
+            pass
 
         # Finished, return the item
         return item

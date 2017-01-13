@@ -2,7 +2,7 @@ import scrapy
 import logging
 import locale
 
-locale.setlocale(locale.LC_ALL, 'fr_CH.utf8') 
+locale.setlocale(locale.LC_ALL, 'de_CH.utf8') 
 
 class PressReleasesSpider(scrapy.Spider):
     name = 'pressreleases'

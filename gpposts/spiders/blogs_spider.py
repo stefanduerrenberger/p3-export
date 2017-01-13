@@ -2,7 +2,7 @@ import scrapy
 import logging
 import locale
 
-locale.setlocale(locale.LC_ALL, 'fr_CH.utf8') 
+locale.setlocale(locale.LC_ALL, 'de_CH.utf8') 
 
 class BlogsSpider(scrapy.Spider):
     name = 'blogs'
@@ -57,6 +57,7 @@ class BlogsSpider(scrapy.Spider):
             'text':  response.css('div.news-list div.post-content').extract_first(),
             'remove': response.css('div.img-view.galleria_container').extract_first(),
             'remove2': response.xpath('//span[@class="btn-open"]').extract_first(),
+            'remove3': response.css('div.gallery div.navi').extract_first(),
             'imagesA': response.xpath('//div[@class="news-list"]//div[@class="post-content"]//a[img]/@href').extract(),
             #'imagesB': response.xpath('//div[@class="news-list"]//div[@class="post-content"]//img[not(ancestor::a)]/@src').extract(), #don't import image if there's an a tag around it
             'imagesB': response.xpath('//div[@class="news-list"]//div[@class="post-content"]//img/@src').extract(),
@@ -84,6 +85,7 @@ class BlogsSpider(scrapy.Spider):
             'text':  response.xpath('//div[@class="text"]/div[not(@id) and not(@class)]').extract_first(),
             'remove': response.css('div.img-view.galleria_container').extract_first(),
             'remove2': response.xpath('//span[@class="btn-open"]').extract_first(),
+            'remove3': response.css('div.gallery div.navi').extract_first(),
             'imagesA': response.xpath('//div[@class="text"]/div[not(@id) and not(@class)]//a[img]/@href').extract(),
             #'imagesB': response.xpath('//div[@class="text"]/div[not(@id) and not(@class)]//img[not(ancestor::a)]/@src').extract(), #don't import image if there's an a tag around it
             'imagesB': response.xpath('//div[@class="text"]/div[not(@id) and not(@class)]//img/@src').extract(),
