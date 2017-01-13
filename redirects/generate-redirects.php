@@ -5,7 +5,7 @@ $dbname = 'greenpeace';
 $dbuser = 'greenpeace';
 $dbpass = 'greenpeace';
 
-$pdo = new PDO('mysql:host=localhost;dbname=greenpeace', $dbuser, $dbpass);
+$pdo = new PDO('mysql:host=localhost;dbname='.$dbname, $dbuser, $dbpass);
 
 $sql = "SELECT 
         post.id AS ID, 
