@@ -30,12 +30,6 @@ class GppostsPipeline(object):
             else:
                 item['title'] = item['supertitle']
 
-        # Duplicate filter by title
-        if item['title'] in self.titles_seen:
-            raise DropItem("Duplicate item found: %s" % item)
-        else:
-            self.titles_seen.add(item['title'])
-
         # Date format
         if item['date']:
             try:
@@ -133,7 +127,11 @@ class GppostsPipeline(object):
                 headings = rows[0] # get headings
                 conversionDictionary = {};
                 for row in rows:
-                    conversionDictionary[row[0].lower()] = row[1]
+                    try:
+                        conversionDictionary[row[0].lower()] = row[1]
+                    except:
+                        pass
+
 
 
             # convert the tags, but only save them once if they are converted to the same new tag
@@ -167,7 +165,10 @@ class GppostsPipeline(object):
                 headings = rows[0] # get headings
                 conversionDictionary = {};
                 for row in rows:
-                    conversionDictionary[row[0].lower()] = row[1]
+                    try:
+                        conversionDictionary[row[0].lower()] = row[1]
+                    except:
+                        pass
 
 
             # convert the tags, but only save them once if they are converted to the same new tag
@@ -188,34 +189,6 @@ class GppostsPipeline(object):
 
         # save the tags back to item['tags']
         item['tags'] = ",".join(newTags) 
-
-        # get the slug from the URL
-        try:
-            if item['type'] in ('Blog', 'Story'):
-                if item['language'] == 'de':
-                    found = re.findall('^http:\/\/www.greenpeace.org(.*)\/(.*)\/blog\/([0-9]*)\/$', item['url'])
-                    item['slug'] = found[0][1].strip()
-                elif item['language'] == 'fr':
-                    item['slug'] = '' # Doesn't have a slug in the URL
-
-            elif item['type'] == 'PressRelease':
-                if item['language'] == 'de':
-                    found = re.findall('^http:\/\/www.greenpeace.org(.*)\/Medienmitteilungen\/(.*)\/$', item['url'])
-                    item['slug'] = found[0][1].strip()
-                elif item['language'] == 'fr':
-                    found = re.findall('^http:\/\/www.greenpeace.org(.*)\/communiques\/(.*)\/(.*)\/$', item['url'])
-                    item['slug'] = found[0][2].strip()
-
-            elif item['type'] == 'Publication':
-                if item['language'] == 'de':
-                    found = re.findall('^http:\/\/www.greenpeace.org(.*)\/Publikationen\/([a-zA-Z-]*)\/(.*)\/$', item['url'])
-                    item['slug'] = found[0][2].strip()
-                elif item['language'] == 'fr':
-                    found = re.findall('^http:\/\/www.greenpeace.org(.*)\/publications\/documents\/(.*)\/$', item['url'])
-                    item['slug'] = found[0][1].strip()
-        except Exception:
-            logging.info('Failed to find slug:' + item['date'])
-            pass
 
         # Finished, return the item
         return item
