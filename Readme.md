@@ -30,6 +30,8 @@ Running this puts heavy loads on the webserver. Please be considerate. When test
 - gpposts/settings.py: Most settings are here, some you can find directly in the spider files.
 - gpposts/spiders/blogs_spider.py: Spider for blog posts. Adapt to your needs.
 - gpposts/spiders/media_spider.py: Spider for Press Releasses . Adapt to your needs.
+- pages-to-archive.csv: A list of all the pages that the pages spider should crawl
+- gpposts/spiders/pages_spider.py: Spider for pages. Different from the other spiders that find articles, this one reads from a list (pages-to-archive.csv) of pages and gets content of those. We manually put this list together because we didn't want to import too much of the old content. Adapt to your needs.
 - gpposts/spiders/publications_spider.py: Spider for publications (reports) posts. Adapt to your needs.
 - redirects/generate-redirects.php: PHP script to generate redirects from old URLs to new ones. Used as standalone and works by getting the info from the Wordpress database after the import. (And no, that's not our production DB password. Don't even try.)
 
